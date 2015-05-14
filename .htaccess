@@ -1,0 +1,10 @@
+
+RewriteEngine on
+RewriteCond %{HTTP_HOST} ^i\.budzique\.com$ [OR]
+RewriteCond %{HTTP_HOST} ^www\.i\.budzique\.com$
+RewriteRule ^i$ "http\:\/\/i\.budzique\.com\/" [R=301,L]
+RewriteRule ^t$ "http\:\/\/i\.budzique\.com\/" [R=301,L]
+RewriteCond %{HTTP_HOST} ^i\.budzique\.com$ [OR]
+RewriteCond %{HTTP_HOST} ^www\.i\.budzique\.com$
+RewriteRule ^t\/?$ "http\:\/\/i\.budzique\.com\/" [R=301,L]
+
