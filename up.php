@@ -66,7 +66,8 @@ foreach ($_FILES['Filedata']['name'] as $i => $name)
 
 	// Get filetype:
 	$ext = $m_img->m_extension($m_img->m_name);
-	echo $ext;
+	if ($c_debug_mode)
+		echo $ext;
 	$ext = strtolower($ext);
 	
 	// Check for proper formats:
