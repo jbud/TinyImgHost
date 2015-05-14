@@ -3,7 +3,7 @@ include "config.php";
 //include "class.m_img.php"; 
 $mode = 1;
 $message = "";
-if (extension_loaded('Imagick')){
+if (extension_loaded('Imagick') && $c_debug_mode){
 	$message = "Imagick Installed!";
 }
 if ($_GET['m'] == "v") // View Multiple Images
@@ -59,7 +59,7 @@ if ($_GET['m'] == "v") // View Multiple Images
 					}
 				}
 				if(isInvalid){
-					$("#submit").val("Upload...").removeAttr("disabled").css("cursor", "pointer").css('background', '#2d2d2d');
+					$("#submit").html("Upload...").removeAttr("disabled").css("cursor", "pointer").css('background', '#2d2d2d');
 					alert(message);
 					return false;
 				}

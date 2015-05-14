@@ -203,7 +203,7 @@ class m_img
 		$n = explode(".".$ext, $name);
 		$name = $n[0];
 		$name = strtolower($name);
-		$name = preg_replace("/[^[:alnum:]]/","",$name);
+		$name = preg_replace("/[^[:alnum:]]/","",$name); // Remove non-alphanumeric characters
 		$ch_1 = chr(rand(ord("a"), ord("z")));
 		$ch_2 = chr(rand(ord("z"), ord("a")));
 		$ch_3 = chr(rand(ord("z"), ord("a")));

@@ -1,6 +1,6 @@
 <?php
 include "config.php";
-
+include "class.m_img.php";
 ?>
 
 <!DOCTYPE html>
@@ -32,13 +32,11 @@ include "config.php";
 	<div class="content"><p>
 <?php
 //error_reporting(0);
-include "class.m_img.php";
-
 
 if (!isset($_FILES["Filedata"]))
 {
 	echo "ERROR:invalid upload";
-	exit(0);
+	exit(0); // Exit early, we don't have any file uploads, this page can only be opened via index.php
 }
 
 $message = array();
@@ -74,7 +72,7 @@ foreach ($_FILES['Filedata']['name'] as $i => $name)
 	// Check for proper formats:
 	if ($ext != "bmp" && $ext != "jpg" && $ext != "jpeg" && $ext != "png" && $ext != "gif")
 	{
-		$message[] = "ERROR 2: Invalid File Type... ".$m_img->m_name."(".$ext.")";
+		$message[] = "ERROR 2: Invalid File Type... ".$m_img->m_name."(".$ext.")"; // This is only thrown if javascript filter fails.
 	}
 	
 	// If the image is BMP, convert it to PNG:
@@ -110,7 +108,7 @@ foreach ($_FILES['Filedata']['name'] as $i => $name)
 	// This loop will rename a file until the name is not taken, it will also cut down a long filename:
 	do{
 		$m_img->m_name = $m_img->m_rename($m_img->m_name);
-	}while(file_exists("i/".$m_img->m_name));
+	}while(file_exists("i/".$m_img->m_name)); // Cleverly ensure that rename is called once and only calls again if in the slight chance we randomly generate a taken name.
 	
 	// Add name to list of names:
 	$names .= (empty($names)) ? $m_img->m_name : ",".$m_img->m_name;
@@ -123,10 +121,12 @@ foreach ($_FILES['Filedata']['name'] as $i => $name)
 	copy($m_img->m_temp, $path2destImg);
 	
 	$d = exif_imagetype($m_img->m_temp);
-	var_dump($d);
+	if ($c_debug_mode)
+		var_dump($d);
 	// Create thumbnail:
 	$r = $m_img->m_thumbnail($path2destImg, $path2destThm, $ext);
-	var_dump($r);
+	if ($c_debug_mode)
+		var_dump($r);
 	unlink($m_img->m_temp);
 }
 if (!empty($message))
@@ -134,7 +134,8 @@ if (!empty($message))
 	echo "An error(s) occurred:<br/>";
 	foreach ($message as $m)
 	{
-		echo $m."</br>";
+		if ($c_debug_mode)
+			echo $m."</br>";
 	}
 	exit(0);
 }
