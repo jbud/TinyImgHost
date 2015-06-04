@@ -9,6 +9,8 @@
 *	- Initial Release
 ***** 1/14/2014 - 1.1
 *	- Support non-Imagick servers.
+***** 6/4/2015 - 1.2
+*   - Support for IP banning system.
 **/
 class m_img
 {
