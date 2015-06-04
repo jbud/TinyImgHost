@@ -39,9 +39,15 @@ if (!isset($_FILES["Filedata"]))
 	exit(0); // Exit early, we don't have any file uploads, this page can only be opened via index.php
 }
 
+
 $message = array();
 $names = "";
 $m_img = new m_img;
+$ip = $m_img->m_ip();
+if ($m_img->m_isbannedip($ip)){
+	echo "ERROR:you are banned!";
+	exit(0);
+}
 
 foreach ($_FILES['Filedata']['name'] as $i => $name)
 {
@@ -50,7 +56,7 @@ foreach ($_FILES['Filedata']['name'] as $i => $name)
 	{
 		$message[] = "ERROR 1: Unknown Error... ".$_FILES["Filedata"]["error"][$i];
 	}
-
+	
 	// Set variables:
 	$m_img->m_name = $_FILES["Filedata"]["name"][$i];
 	$m_img->m_temp = "temp/".$m_img->m_name;
@@ -117,6 +123,11 @@ foreach ($_FILES['Filedata']['name'] as $i => $name)
 	// Set path variables here, instead of above due to m_rename's effect:
 	$path2destImg = "i/".$m_img->m_name;
 	$path2destThm = "t/".$m_img->m_name;
+	
+	
+	$path2destData = explode(".".$ext,$path2destImg);
+	$path2destData = $path2destData[0].".data";
+	file_put_contents($path2destData, base64_encode($ip));
 	
 	// Copy temp image to destination.
 	copy($m_img->m_temp, $path2destImg);

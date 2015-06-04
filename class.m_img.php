@@ -225,5 +225,47 @@ class m_img
 		$name = $name.$ch_1.$ch_2.$ch_3.'.'.$ext;
 		return $name;
 	}
+	function m_ip(){
+		if (!empty($_SERVER['HTTP_CLIENT_IP'])) {
+			$ip = $_SERVER['HTTP_CLIENT_IP'];
+		} elseif (!empty($_SERVER['HTTP_X_FORWARDED_FOR'])) {
+			$ip = $_SERVER['HTTP_X_FORWARDED_FOR'];
+		} else {
+			$ip = $_SERVER['REMOTE_ADDR'];
+		}
+		return $ip;
+	}
+	function m_banip($ip){
+		if ($this->isbannedip($ip)){
+			return -1;
+		}
+		$bans = file_get_contents("bans.data");
+		if (empty($bans)){
+			$bansNew = $ip;
+		}else{
+			$bansDecoded = base64_decode($bans);
+			$bansNew = $bansDecoded.";".$ip;
+		}
+		$bansEncoded = base64_encode($bansNew);
+		if (!file_put_contents("bans.data", $bansEncoded)){
+			return 0;
+		}else return 1;
+		
+	}
+	function m_isbannedip ($ip){
+		$banned = false;
+		$bans = file_get_contents("bans.data");
+		$bansDecoded = base64_decode($bans);
+		$bansIpArray = explode(';',$bansDecoded);
+		foreach($bansIpArray as $banned){
+			if ($ip == $banned){
+				$banned = true;
+			}
+		}
+		if ($banned)
+			return true;
+		else 
+			return false;
+	}
 }
 ?>
