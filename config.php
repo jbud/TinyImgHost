@@ -1,5 +1,6 @@
 <?php
 // General Settings:
+$c_path = "/home/budzique/public_html/i/";
 $c_url = "http://i.budzique.com/"; // Example: http://i.jbud.org/ (Remember the slash at the end!)
 $c_title = "TinyImg"; // Title of your image host... (Example: Bob's Images)
 $c_tagline = "Worth a thousand words"; // Tagline of your image host... (Example: Worth a thousand words)
