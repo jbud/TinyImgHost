@@ -25,6 +25,33 @@ function getAllImages(){
 	}
 	return $builtArray;
 }
+    function getIp($image){
+        $m_img = new m_img;
+        $ext = $m_img->m_extension($image);
+        $name = explode("/",$image);
+        $name = explode(".".$ext,$name[1])
+        $name = $name[0];
+        $ip = get_file_contents($name.".data");
+        $ip = base64_decode($ip);
+        return $ip;
+    }
+    function banIp($ip){
+        $m_img = new m_img;
+        $r = $m_img->m_banip($ip);
+        switch($r){
+            case -1:
+                $message = "<th><h2>IP already banned, images killed...</th></h2>";
+                break;
+            case 0:
+            default:
+                $message = "<th><h2>IP could not be banned due to an error!</th></h2>";
+                break;
+            case 1:
+                $message = "<th><h2>IP banned, images killed...</th></h2>";
+                break;
+        }
+        return $message;
+    }
 $builtHTML = "<tr>";
 
 if ($_GET["manage"] == 1){
@@ -32,8 +59,7 @@ if ($_GET["manage"] == 1){
 	$manage = base64_encode($i);
 	$builtHTML .= "
 	<th><p><img width='650' alt='{$i}' src='{$c_url}{$i}'/></p>
-	<p><a href='?token={$tokn}&manage=2&function=1&image={$manage}'>Temp Ban for 1 day</a></p>
-	<p><a href='?token={$tokn}&manage=2&function=2&image={$manage}'>Temp Ban for 1 week</a></p>
+	<p><a href='?token={$tokn}&manage=2&function=2&image={$manage}'>Ban IP.</a></p>
 	<p><a href='?token={$tokn}&manage=2&function=3&image={$manage}'>Delete</a></p></th>
 	";
 	
@@ -44,6 +70,9 @@ if ($_GET["manage"] == 1){
 		case 1:
 			break;
 		case 2:
+            $builtHTML .= banIP(getIp($i));
+            $m_img = new m_img;
+            $m-img->m_refresh("admin.php?token={$tokn}");
 			break;
 		case 3:
 			if (unlink($c_path.$i)){
