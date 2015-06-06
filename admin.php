@@ -2,13 +2,12 @@
 include "config.php";
 include "class.m_img.php";
 
-
 $validToken = "420noscope4yeezus"; // admin.php?token=420noscope4yeezus
-if ($_GET['token'] != $validToken){
+$tokn = $_GET['token'];
+if ($tokn != $validToken){
 	die("Sorry dog.");
 }
 
-$tokn = $_GET['token'];
 $m_img = new m_img;
 function getAllImages(){
 	$m_img = new m_img;
@@ -25,33 +24,33 @@ function getAllImages(){
 	}
 	return $builtArray;
 }
-    function getIp($image){
-        $m_img = new m_img;
-        $ext = $m_img->m_extension($image);
-        $name = explode("/",$image);
-        $name = explode(".".$ext,$name[1])
-        $name = $name[0];
-        $ip = get_file_contents($name.".data");
-        $ip = base64_decode($ip);
-        return $ip;
-    }
-    function banIp($ip){
-        $m_img = new m_img;
-        $r = $m_img->m_banip($ip);
-        switch($r){
-            case -1:
-                $message = "<th><h2>IP already banned, images killed...</th></h2>";
-                break;
-            case 0:
-            default:
-                $message = "<th><h2>IP could not be banned due to an error!</th></h2>";
-                break;
-            case 1:
-                $message = "<th><h2>IP banned, images killed...</th></h2>";
-                break;
-        }
-        return $message;
-    }
+function getIp($image){
+	$m_img = new m_img;
+	$ext = $m_img->m_extension($image);
+	$name = explode("/",$image);
+	$name = explode(".".$ext,$name[1])
+	$name = $name[0];
+	$ip = get_file_contents($name.".data");
+	$ip = base64_decode($ip);
+	return $ip;
+}
+function banIp($ip){
+	$m_img = new m_img;
+	$r = $m_img->m_banip($ip);
+	switch($r){
+		case -1:
+			$message = "<th><h2>IP already banned, images killed...</th></h2>";
+			break;
+		case 0:
+		default:
+			$message = "<th><h2>IP could not be banned due to an error!</th></h2>";
+			break;
+		case 1:
+			$message = "<th><h2>IP banned, images killed...</th></h2>";
+			break;
+	}
+	return $message;
+}
 $builtHTML = "<tr>";
 
 if ($_GET["manage"] == 1){
@@ -96,7 +95,7 @@ if ($_GET["manage"] == 1){
 		}
 		$builtHTML .= "
 		<th><p><img style='height:300px;max-width:300px;width: expression(this.width > 300 ? 300: true);' src='{$c_url}{$i}' alt='{$i}' width='300'/></p>
-		<p><a href='?token=420noscope4yeezus&manage=1&image={$i}'>manage this image...</a></p></th>
+		<p><a href='?token={$tokn}&manage=1&image={$i}'>manage this image...</a></p></th>
 		";
 		$j++;
 	}
