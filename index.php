@@ -145,6 +145,7 @@ if ($mode == 2) {?>
 <p><?php echo $message; ?></p>
     </div>
 	<footer>
+		<p class="copy"><a href="admin.php">Admin Access</a></p>
         <p class="copy">&copy; 2014 Joe Jackson | All right reserved &bull;</p>
     </footer>
 </body>

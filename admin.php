@@ -5,9 +5,13 @@ include "class.m_img.php";
 $validToken = "420noscope4yeezus"; // admin.php?token=420noscope4yeezus
 $tokn = $_GET['token'];
 if ($tokn != $validToken){
-	die("Sorry dog.");
+	$builtHTML = "
+	<tr><th><p>You are not logged in...</p></th></tr>
+	<tr><th><form method='get' id='t'><input id='token' name='token' type='password' /></th></tr>
+	<tr><th><input id='submit' type='submit' /></form></th></tr>
+	";
 }
-
+else{
 $m_img = new m_img;
 function getAllImages(){
 	$m_img = new m_img;
@@ -101,7 +105,7 @@ if ($_GET["manage"] == 1){
 	}
 }
 $builtHTML .= "</tr>"
-
+}
 ?>
 <!DOCTYPE html>
 <html>
