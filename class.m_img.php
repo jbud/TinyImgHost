@@ -238,7 +238,7 @@ class m_img
 		return $ip;
 	}
 	function m_banip($ip){
-		if ($this->isbannedip($ip)){
+		if ($this->m_isbannedip($ip)){
 			return -1;
 		}
 		$bans = file_get_contents("bans.data");
@@ -268,6 +268,23 @@ class m_img
 			return true;
 		else 
 			return false;
+	}
+	function m_killbannedimages($ip){
+		$success = false;
+		foreach (glob("i/*.data") as $f){
+			$c = file_get_contents($f);
+			if (base64_decode($c) == $ip){
+				$i = explode(".data", $f);
+				$i = $i[0];
+				$t = explode("i/",$i);
+				$t = "t/".$t[1];
+				unlink($f); // delete image data.
+				unlink($i); // delete image.
+				unlink($t);
+				$success = true;
+			}
+		}
+		return $success;
 	}
 }
 ?>

@@ -7,7 +7,7 @@ $tokn = $_GET['token'];
 if ($tokn != $validToken){
 	$builtHTML = "
 	<tr><th><p>You are not logged in...</p></th></tr>
-	<tr><th><form method='get' id='t'><input id='token' name='token' type='password' /></th></tr>
+	<tr><th><form method='get' action='admin.php' id='t'><input id='token' name='token' type='password' /></th></tr>
 	<tr><th><input id='submit' type='submit' /></form></th></tr>
 	";
 }
@@ -32,9 +32,9 @@ function getIp($image){
 	$m_img = new m_img;
 	$ext = $m_img->m_extension($image);
 	$name = explode("/",$image);
-	$name = explode(".".$ext,$name[1])
+	$name = explode(".".$ext,$name[1]);
 	$name = $name[0];
-	$ip = get_file_contents($name.".data");
+	$ip = file_get_contents("i/".$name.".data");
 	$ip = base64_decode($ip);
 	return $ip;
 }
@@ -60,9 +60,11 @@ $builtHTML = "<tr>";
 if ($_GET["manage"] == 1){
 	$i = $_GET["image"];
 	$manage = base64_encode($i);
+	$ip = getIp($i);
 	$builtHTML .= "
 	<th><p><img width='650' alt='{$i}' src='{$c_url}{$i}'/></p>
-	<p><a href='?token={$tokn}&manage=2&function=2&image={$manage}'>Ban IP.</a></p>
+	<p>IP Address: {$ip}</p>
+	<p><a href='?token={$tokn}&manage=2&function=2&image={$manage}'>Ban IP</a></p>
 	<p><a href='?token={$tokn}&manage=2&function=3&image={$manage}'>Delete</a></p></th>
 	";
 	
@@ -75,7 +77,7 @@ if ($_GET["manage"] == 1){
 		case 2:
             $builtHTML .= banIP(getIp($i));
             $m_img = new m_img;
-            $m-img->m_refresh("admin.php?token={$tokn}");
+            $m_img->m_refresh("admin.php?token={$tokn}");
 			break;
 		case 3:
 			if (unlink($c_path.$i)){
@@ -97,14 +99,16 @@ if ($_GET["manage"] == 1){
 			$j = 0;
 			$builtHTML .= "</tr><tr>";
 		}
+		$ip = getip($i);
 		$builtHTML .= "
 		<th><p><img style='height:300px;max-width:300px;width: expression(this.width > 300 ? 300: true);' src='{$c_url}{$i}' alt='{$i}' width='300'/></p>
+		<p>IP Address: {$ip}</p>
 		<p><a href='?token={$tokn}&manage=1&image={$i}'>manage this image...</a></p></th>
 		";
 		$j++;
 	}
 }
-$builtHTML .= "</tr>"
+$builtHTML .= "</tr>";
 }
 ?>
 <!DOCTYPE html>
