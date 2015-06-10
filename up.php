@@ -110,6 +110,7 @@ foreach ($_FILES['Filedata']['name'] as $i => $name)
 			imagedestroy($temp); 
 			imagedestroy($src);
 		}
+		$ext = "png";
 	}
 
 	// This loop will rename a file until the name is not taken, it will also cut down a long filename:
